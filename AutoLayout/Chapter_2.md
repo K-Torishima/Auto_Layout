@@ -1,4 +1,4 @@
-# Auto Layoutの基本概念
+# Chapter2 Auto Layoutの基本概念
 
 Auto Layoutとは、制約を用いたレイアウト方法
 制約はあるインターフェースオブジェクトの関係性を定義する
