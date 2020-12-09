@@ -197,3 +197,73 @@ var relation: NSLayoutRelation { get }
  }
 
  ```
+
+- 制約通りにレイアウトを実行してほしい場合はEqual、
+- 制約より小さい制約整数でレイアウトを実行したい場合はLessThanOrEqual
+- 制約より大きい制約定数でレイアウトを実行したい場合はGreaterThanEqual
+
+Relationは制約式[ y = ax = b] における　[=] の部分を示している
+よってEqualであれば等号（＝）ですが、LeesThanOrEqualならば小なりイコール（≦）
+GreaterThanOrEqual であれば、大なりイコール（≧）と置き換わる
+
+上記を使うとコンテンツに合わせて、変化する場合のひっぱ最小マージンを定義することが可能
+ただし制約式に不等号を含めた場合は、十分に気を付けないと制約Errorになる
+
+### Multiplier 制約の係数
+
+MultiplierはFirst Attribute とSecond Attributeの比較を示し、以下の宣言がなされる
+
+``` swift
+var multiplier: CGFloat { get }
+```
+
+[y = ax + b] の　[a] に当たる
+
+### 優先度
+
+制約は優先度の高い順に満たされる
+もし論理矛盾のある制約が与えられていても優先度の高い物が順番に採用され、
+レイアウトは正常に保たれる
+もし同じ性質の制約たちが同じ優先度を持っていると、AutoLayoutエンジンが自動的に制約を整理し、
+論理矛盾している制約を削除する場合がある
+このような場合、意図したレイアウトと違うものになりうるので、優先度を正しく設定することが必要
+
+## Intrinsic Content Size 固有の寸法
+
+UILabel, UIButton, UIImageは、 Intrinsic Content Size(固有の寸法を持っている)
+あるViewObjectのContentsを圧縮したり、切り出したりすることなく表示するために最低限必要なサイズである
+Intrinsic Content size を用いると、コンテンツを省略できずに、正しいレイアウトを保つことができる
+
+UILabelや、UIButtonはテキストの長さによってIntrinsic Content Size が変化する良い例である
+Intrinsic Content size によってサイズが決定されているUILabelとUIButtonが配置されているラベルには、
+全ての行を表示するように設定されており、幅の制約から計算されるIntrinsic Content Sizeの高さが与えられる
+
+また、ボタンには、サイズが明示的には与えられていないが、Intrinsic Content　size によりサイズが決定される
+UIImageViewも同様にIntrinsic Content Size　を取得することもできる
+CGSizeとして返される
+
+コンテンツの大きさによって、オブジェクトのサイズを調整できるため、
+実践において、Intrinsic Content Sizeは多くの場面で活躍する
+
+## Content Hugging Priority と　Content Compression Resistance Priority  コンテンツに対する優先度
+
+Content Hugging Priority と　Content Compression Resistance Priorityは制約の一種
+それぞれ、大きくなりにくさ、小さくなりにくさを定義している
+
+縦方向横方向のそれぞれ指定することができ、通常の優先度のように振る舞う
+Content Hugging Priority は、文字通り　「コンテンツに沿う優先度」　と言う意味
+この制約が低いと、インターフェースオブジェクトは周りの制約につられて大きくなりやすくなる
+
+Content Compression Resistance Priorityとは「コンテンツの圧縮抵抗優先度」と言う意味
+つまり、コンテンツに反して圧縮されていないかどうかの優先度
+
+他のことも書いてあるが実践しないと頭に入らんので
+この章は終わり
+
+## まとめ
+
+- Auto Layout では、制約を用いて、レイアウトを定義する
+- 制約には開発者が明示的に定義するものと、自動で与えられる物がある
+- Intrinsinc Content Sizeを用いると、コンテンツのサイズに合わせたレイアウトを実現できる
+- Content Hugging Priority や、　Content　Compression Resistance Priority を設定することで、Intrinsic Content Sizeが与える影響を調整することができる
+  
