@@ -45,3 +45,53 @@ Xcodeで外接矩形を確かめる方法がある
 
 ## 制約の定義する
 
+制約を定義するには
+
+- 開発者が、明示的に制約オブジェクトを生成する方法
+  - NSLayoutConstraint を生成することで制約を指定する
+
+- 予めViewオブジェクトが持つコンテンツによって決定させる制約を用いる方法
+  - IntrinsicContent Size を有効活用することで制約を与える
+
+この二種類
+
+### NSLayoutConstraint 制約を設定するためのクラス
+
+NSLayoutConstraintを精製してViewに追加することで、制約を設定したレイアウトを生成することができる
+NSLayoutConstraintはInterface BuilderもしくはCodeから生成できる
+
+``` swift
+
+convenience init(item view1: AnyObject,
+            attribute attr1: NSLayoutAttribute,
+         relatedBy relation: NSLayoutRelation,
+               toItem view2: AnyObject?,
+            attribute attr2: NSLayoutAttribute,
+      multiplier multiplier: CGFloat,
+                 constant c: CGFloat)
+
+
+let leftConstraint = NSLayoutConstraint(item: contentView, // 制約を追加する対象のViewA
+                                   attribute: .Left,       // ViewAの制約を追加する位置　
+                                   relatedBy: .Equal,      // View達の関係　＝　≧、≦　から選択
+                                     toItem : view,        // 制約を追加する対象のViewB
+                                   attribute: .Left,       // ViewBの制約を追加する処理　
+                                   mutiplier: 1.0,         // 制約式の定数a
+                                    constant: 10.0)        // 制約式の定数b
+
+
+view.addConstraint(leftConstraint)
+```
+
+上記のパラメータは指定して書くことは少ないが、知識として必ずやくにたつ
+
+以下各パラメータの種類に関して
+
+### Item 制約の対象となるオブジェクト
+
+itemとは制約を追加する対象となるインターフェースオブジェクトをさす
+- firstItem, secondItemがある
+- 両者が入れ替わると制約に関わる数値も変わる
+
+### Attribute 対象となるオブジェクトの要素
+
