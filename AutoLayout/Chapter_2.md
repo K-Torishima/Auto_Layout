@@ -37,11 +37,11 @@ auto layoutは各コンポーネントのフレームではなく外接矩形を
 
 Xcodeで外接矩形を確かめる方法がある
 [product] -> [Scheme] -> [Edit Scheme] -> [Run] -> [Alignment] 起動オプションを設定できる
-[Alignments passed on Launch] に　
+[Alignments passed on Launch] に
+
 - UIViewShowAlignmentRectsをチェックすると、デバック時に外接矩形を確認できるようになる
 
 <image src="https://user-images.githubusercontent.com/52149750/101587835-5c811b80-3a28-11eb-9a83-ac586ee73f4f.png" width="500">
-
 
 ## 制約の定義する
 
@@ -90,8 +90,110 @@ view.addConstraint(leftConstraint)
 ### Item 制約の対象となるオブジェクト
 
 itemとは制約を追加する対象となるインターフェースオブジェクトをさす
+
 - firstItem, secondItemがある
 - 両者が入れ替わると制約に関わる数値も変わる
 
 ### Attribute 対象となるオブジェクトの要素
 
+Attributeは、対象となるオブジェクトのどこに対して制約を設定するのか示す
+FirstItem, SecondItemに対して、Attributeを設定でき、それぞれFirst Attribute Second AttriそれぞれFirst Attribute Second Attribute
+と呼ばれる
+
+NSLayoutAttributeは次のenumとして定義されている
+
+``` swift
+
+enum NSLayoutAttrbute: Int {
+    case Left
+    case Right
+    case Top
+    case Bottom
+    case Leading
+    case Trailing
+    case Width
+    case Height
+    case CenterX
+    case CenterY
+    case Baseline
+    case FirstBaseline
+    case LeftMargin
+    case RightMargin
+    case TopMargin
+    case BottomMargin
+    case LeadingMargin
+    case TrailingMargin
+    case CenterXWithinMargins
+    case CenterYWithinMargins
+    case NotAnAttrbute
+}
+
+```
+
+それぞれの要素は次の通り
+
+#### Left, Right, Top, Bottom
+
+それぞれ、あるViewの境界線となる外接矩形の左端、右端、下端、上端を示す
+言い方を変えると
+X座標上の最小と最大の値、Y座標の最小と最大の値
+
+#### Leading, Trailing
+
+leading(先頭)　trailing(末尾)
+言語によて変わるので、基本的にこれを使う
+
+#### CenterX, CenterY
+
+インターフェースオブジェクトの外接矩形のX座標とY座標における中心を示す
+オブジェクトを親Viewに揃えたいときに利用する
+
+#### Baseline, FirstBaseline
+
+どちらもコンポーネントのテキストのベースラインを示す
+テキストのベースラインとはテキストを整列するための基準線であり、日本語では文字の下端に存在する
+アルファベットを整列するための基準線であり、日本語では文字の下端に存在する
+アルファベットではgや、jなど、この基準線より、下に描画する文字もある
+
+文字列が一行の時はこれらのAttributeに違いはない
+複数の場合Baselineは文字列の最終行を示し、FirstBaselineは文字列の行のベースラインを示す
+BaselineはLastBaselineである
+文字列を縦方向に揃える場合、特に理由がなければ、Attributeを使うのが良い
+
+#### マージン
+
+LeftMargin　RightMargin TopMargin BottomMargin, LeadingMagin, TailingMargin
+は、対応するAttributeのマージンを表す
+CenterYWithinMargin, CenterXWithinMargin　X、Yにおける中央をさす
+
+ここのサスマージンとは、Viewを置いたときの隙間
+標準的なアプリのレイアウトに近づける
+
+#### NotAnAttribute
+
+名前のとおりAttributeではない
+
+### Constant 制約の距離
+
+制約定数はコンポーネントの相対距離や、サイズを表す
+制約定数の変化をアニメーションにするさせることも可能
+
+### Relation 要素の関係性
+
+Relation はFirstItemとSecondItemのAttribute同士の関係性を示し、その値は以下のように宣言されている
+
+``` swift
+var relation: NSLayoutRelation { get }
+```
+
+ 定義
+
+ ``` swift
+
+ enum NSLayoutRelation: Int { 
+     case LessThanOrEqual
+     case Equal
+     case GreaterThanOrEqual
+ }
+
+ ```
