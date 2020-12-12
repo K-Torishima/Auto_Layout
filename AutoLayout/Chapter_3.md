@@ -74,4 +74,3 @@ updateConstraintsIfNeeded()とは違い、即座にupdateConstraints()が呼ば�
 - UIScrollViewのサブクラスにおいて、contentOffSetが変更された時
 
 レイアウトが必要なタイミングで、開発者が明示的にフレームの更新を実施することもできる
-今日のコミット
