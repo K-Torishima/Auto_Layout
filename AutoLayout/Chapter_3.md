@@ -183,8 +183,155 @@ UITabViewControllerにおけるタブの切り替え時などにもこのメソ�
 
 ## UIWindow
 
+### UIWindowとは
+
 UIWindowはviewを管理し、ディスプレイに表示するウインドウの役割を担っている
 UIWindowは、タッチイベン、トフォーカス、座標変換に関して特別な機能が追加されたUIViewのサブクラス
 ウィンドウは以下のようにキーウィンドウとなることで、これらの入力を受け付けることができる
 
 このUIWindowは一つのアプリ上で複数表示できる
+開発者が明示的にウィンドウを生成していなくても、実は新しいウィンドウが生成されていることがある
+キーボードとかAlertViewは新しく作っている
+
+### UIWindowの重なり順
+
+複数のウィンドウが表示されているとき、どのウィンドウが上にくるか、つまりz軸方向の重なり順を決定するのが、
+UIWindowが保持するwindowlevelプロパティ
+windowlevelが大きいウィンドウほど手前に表示される
+UIKitでは、Normal,Alert、StatusBarの3つのレベルが定義されている、
+
+通常のウィンドウ、アラート、ステータスバーの３つの中では、アラートがもっとも手前に表示される
+
+### ウィンドウからの画面サイズの取得
+
+ウィンドウサイズのとりかた、
+
+``` swift
+let windowSize = UIApplication.sharedApplication().keyWindow?.bounds
+```
+
+マルチタスク対応などのものもあるため
+
+## UStackView
+
+ UIStackViewとは、縦もしくは、複数のサブviewを並べることができるインターフェース
+ Auto Layoutを活用しており、UIStackViewにViewを並べると自動的に制約を設定するため、
+ 変更に対してつよいレイアウトを手軽に作ることができる
+
+UIStackViewを用いると、縦横のレイアウトを組み合わせ、viewのコンポーネントを並べていくだけで、
+製品で使われるようなレイアウトが実現できる
+
+storyboardを用いていれば、キャンパスに配置したスタックviewに表示したいオブジェクトをドラッグしてくるだけで、
+並べるviewを追加することができる
+プログラムで追加削除を実行するには、追加の場合はinsertArrangedSubView(_view: UIView, atIntdex stackIndex: Int)
+削除の場合はremoveArrangedSubView(_ view: UIView)を使う
+
+UIStackViewはオブジェクトの追加削除に合わせたアニメーションを定義することも可能
+このアニメーションはUIViewの保持するhoddenプロパティを用いて行う
+以下のように実行すると、オブジェクト追加時のアニメーションを定義することができる
+
+``` swift
+
+additionalButton.hidden = true
+self.stackView.insertArragedSubView(additonalButton, atIntdex: 1)
+
+UIView.animateWithDuration(1.0) { () -> Void in
+    self.additionalButton.hidden = false
+}
+
+```
+
+### UIStackViewとレイアウト
+
+UIStackViewでは、主にAxis(軸）　Alignmment(揃え方）Distribution（配置）、spacing（スペース）
+の４つのプロパティを設定することで、細かいレイアウトを変更できる
+spacingは配置したサブview同士の距離を定義するだけのものなので、省略し、ここでは他の3つのプロパティについて見ていく
+
+### Axis　並べる方向
+
+Axisはサブviewをhorizontal（水平方向に並べるか）Vertiocalに並べるかを決定している
+
+### Alignment 揃え方
+
+Alignmentは軸垂直方向のサブビュー達の位置を決定している
+Codeから指定する場合はalignmentプロパティに次のenumで定義された値を代入する
+
+``` swift
+
+enum UIStackViewAlignment: Int {
+    case Fill
+    case Leading
+    static var Top: UIStackViewAlignment { get }
+    case FirstBaseline
+    case Center
+    case Trailing
+    static var Bottom: UIStackViewAlignment { get }
+    case LastBaseline
+}
+```
+
+AxisがHorizontalの場合はサブビューたちが並ぶ際の縦方向の基準を選択する
+プロパティはFill,　Top, Center, Bottom, Baselineから選択できる
+
+Fillは高さが一番高いオブジェクトに他のオブジェクトの縦横比を変えて高さを揃え、
+Topは上揃え、Centerは中央揃え、Bottomはした揃え、BaselineはビューオブジェクトのBalinese Attrbuteに揃える
+
+Axisがverticalの場合、横方向におけるサブviewたちの位置を設定することができ、Fill Leading、Center, Trailingから選択できる
+Fill幅が一番広いオブジェクトに他のオブジェクトの幅を揃え、Leadingは先頭揃え、Centerは中央揃え、Trailongは末尾揃え
+
+### Distribution 並べ方
+
+Distributionは、サブviewの軸方向の表示方法を決定するもので、Fill、Fill, Equally,　FillProportionally
+Equal Spacing, Equal Centeringから選択できる　Codeから指定する場合はdistributionプロパティに
+次のenumが定義された値を代入する
+
+``` swift
+
+enum UIViewDistribution: Int {
+    case Fill
+    case FillEqually
+    case FillProportionally
+    case Equalspacing
+    case EqualCentering
+}
+
+```
+
+Distribution Fillは　Intrinsic Content Size を満たしながらスタックビューの軸方向にサブビューを並べる
+AxisがHorizontalの場合、スタックビュー内の各サブビューはそれぞれのintrinsic Content Size の幅だけの幅を持つことになる
+そのため、DistributionにFillを選択している場合はスタックビューの幅はコンテンツの大きさによって決定され、軸方向の制約を指定することはできない
+
+Distribution　Full Equallyは与えられたスタックビューの軸方向を満たすように、サブビューを均等な幅もしくは高さで並べます
+AxisがHorizontalの場合各サブビューの幅は外部から与えられたUIStackViewの高さを均等に割った幅となる
+
+Distribution　Fill　Proportionallyはスタックビューの軸方向を満たすように、サブビューのinstrinsic Content Sizeの比率に合わせた幅もしくは高さで並べる
+
+AlignmentがCenterAxisがHorizontalのスタックビューの場合、画面のサイズに合わせて幅が決定される
+
+Distribution Equal Spacing はサブビューのサイズをIntrinsic Content Size
+から変更せずに、スタックビューの軸方向におけるサブビュー間のスペースを均一にして並べる
+
+AlignmentはCenter、DistributionがEqual Spacing のスタックビュー
+サブビューは　intrinsic Content Size に余ったスペースは均等に分割されていることがわかる
+spacing　プロパティとDistributionのEqual Spacingによるスペースで、大きい方の値がレイアウトに採用されるので、注意が必要
+
+Distribution Equal Centering はUIStackView内にあるIntrinsic Content Sizeの大きさのサブビュー達の中心の距離が均一になるように配置する
+
+## UIStackViewとAutoLayout
+
+UI StackViewは制約を活用しているため、スタックビューにオブジェクトを比べると、オブジェクトは制約が自動的に付与される
+これらの制約は開発者自信が設定する制約にも影響を与えるため、UIStackViewがAuto Layoutの技術の上に成り立っていることを理解していると、デバックの際に役に立つ
+
+スタックviewに関してはいろいろあるので、これもいろいろやってみた方が良さそう、
+いろいろいじってみないとわからない。
+
+## まとめ
+
+- iOSアプリはUIScreen.mainScreen()で取得できるスクリーン、UIApplication.sharedApplication().keywindowで取得できるウインドウ、このウインドウのrootViewControllerのビューコントローラーの階層構造になっており、通常はAppDelegete .Swiftでこの設定が行われる
+
+- UIViewのレイアウトサイクルは、制約の更新、フレームの更新、レンダリングの3ステップで実施される
+- UIViewControllerはviewの読み込み、表示、レイアウトを経て表示されるviewの読み込みが完了した時に呼ばれるviewDidloadでは初期化を表示の直前に呼ばれるviewWillApper()では、動的な値のセットを表示完了後に呼ばれるviewDidApper()ではview表示後の重い処理を実行するなど、最適なタイミングで、最適な処理を実行する必要がある
+- UIwindowはUIViewのサブクラスでウィンドウの役割を担っている、そのためあるウィンドウの前に別のウィンドウを表示することで、アラートや、キーボードなどのUIで現在のUIのをカバーして表示できる
+
+- UIStackViewを用いると、上や横から順番に積み重ねるレイアウトの作成を簡単に実施できる
+これは自動的に制約を付与するオブジェクトであり、動的で柔軟なレイアウトの助けとなる
