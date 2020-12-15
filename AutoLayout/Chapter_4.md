@@ -109,3 +109,7 @@ Aligin は　選択した2つのViewのLeading, Trailing,　Top, Bottom, x方向
 ### 親子関係にあるビューを選択した時
 
 [詳細図](image/4-13.png)
+
+## インターフェースビルダー上での制約表示
+
+### 通常の制約
