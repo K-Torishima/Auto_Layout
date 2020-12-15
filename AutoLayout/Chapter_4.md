@@ -112,4 +112,129 @@ Aligin は　選択した2つのViewのLeading, Trailing,　Top, Bottom, x方向
 
 ## インターフェースビルダー上での制約表示
 
+IBでは視覚的に制約情報を表示できることができる、また、設定した制約に不備があれば、警告が表示されるので、IB上で表示されているフレームと設定した制約がマッチしていることもできる
+そのため、IBはAuto Layoutによるレイアウトを確認するのに最適である
+
 ### 通常の制約
+
+[通常制約](image/4-14.png)
+
+### 中央揃え制約
+
+[中央揃え](image/4-15.png)
+
+### Relationと制約
+
+[Relationと制約](image/4-16.png)
+
+### Multiplierと制約
+
+[Multiplierと制約](image/4-17.png)
+
+### 警告を含む制約
+
+[黄色い制約が表示される](image/4-18.png)
+
+### コンフリクトを含む制約
+
+[コンフリクトを含む制約](image/4-19.png)
+
+## 制約の参照
+
+IBOutletで参照できる
+
+## 制約を編集する
+
+### 制約の一覧を確認する
+
+ストーリーボード上で追加した制約の一覧は、２つの方法で確認できる
+
+- IB左下のボタンから開くDocument Outline Controlで確認
+- Xcodeの画面の右上から表示できる[Utilities]内の[Size inspector]で確認する
+
+### 制約を簡易的に編集する
+
+制約のプロパティはIB上で編集できる
+
+- キャンバス上で制約をダブルクリックする、もしくはSize inspector上の制約一覧からEditボタンを押すことで、編集ができる
+- 制約定数、優先度、Multiplier,Relationshipの編集ができる
+  
+### 制約を細かく編集する（Size inspector）
+
+[参考図](image/4-20.png)
+[参考図](image/4-21.png)
+[参考図](image/4-22.png)
+
+### XibファイルとStoryboardを組み合わせる
+
+Xibの特徴
+
+- 画面遷移とかはできない
+- 複数のViewを扱うことはできる
+- カスタムViewを作るには十
+- storyboardの上に貼り付けることができる
+
+読み込み方法
+
+``` swift
+
+let subView = NSBundle.loadNibNamed("customView", owner: nil, options: nil)[0] as! UIView
+self.view.addSubview(subView)
+
+```
+
+### カスタムクラスのViewにXibファイルを使う
+
+- customView.xib, customView.swiftを作る
+- xibにはviewの配置をする
+- File’s　Ownerとして、custom.swiftを設定する
+- その他いろいろCodeで定義する
+
+## 複数のStoryboardを組み合わせる
+
+- storyboard Referenceを使う
+- 一応Codeでもできる
+  
+Code
+
+``` swift
+
+import UIKit
+
+class MSTabViewController: UIViewController { 
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        self.setupViewControllers()
+    }
+
+    func setupViewControllers() {
+        guard let vc1 = UIStoryboard.sub1Storyboard().instantiateInitialViewController() else { return }
+        guard let vc2 = UIStoryboard.sub2Storyboard().instantiateInitialViewController() else { return }
+
+        self.ViewControllers = [vc1, vc2]
+    } 
+}
+
+extension UIStoryboard {
+    class func sub1Storyboard() -> UIStoryboard {
+        return UIStoryboard(name: "MSSub1", bundle: nil)
+    }
+
+    class func sub2Storyboard() -> UIStoryboard {
+        return UIStoryboard(name: "MSSub2", bundle: nil)
+    }
+}
+
+```
+
+### storyboard Reference
+
+[参考図](image/4-23.png)
+
+## まとめ
+
+- Storyboardを用いると複数の画面構成や遷移をGUIで作成できることができる、IBで編集可能
+- IB上での制約の追加は制約編集ボタンから選択、もしくはViewObjectをControl +　ドラッグすることで実行できる
+- IB上での制約編集は、IB上の制約をダブルクリックするか、キャンバス上の制約を選択してSize inspectorを用いるかのどちらかの方法で実行できる
+- Storyboard Referenceを用いるとStoryboard同士の画面遷移を定義することができる、ファイルが分割されることでコンフリクトのリスクが低減される
