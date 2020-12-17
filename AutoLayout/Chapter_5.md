@@ -25,3 +25,5 @@ let constraint2 = textField.widthAnchor.constraintEqualToConstant(20.0)
 ```
 
 [関係図](image/5-1.png)
+
+今日はちょっと休み
