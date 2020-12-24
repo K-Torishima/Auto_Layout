@@ -32,13 +32,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 - use Auto Layoutというボタンがある
 
-[FileinspecterからAutoLayoutを有効にできる](image/4-4.png)
+![FileinspecterからAutoLayoutを有効にできる](image/4-4.png)
 
 ## 制約編集ボタンを用いて制約を追加する
 
-[制約ボタン](image/4-5.png)
+![制約ボタン](image/4-5.png)
 
-[追加可能な制約表](image/4-6.png)
+![追加可能な制約表](image/4-6.png)
 
 ### spacing to nearest neighbor
 
@@ -50,7 +50,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 定数にはMultipleを表示されるが、値を指定しなければ、現在キャンパス表示されている値が最も近いビューとの間に設定される
 この方法を用いると、より効率的に制約を指定することができる
 
-[▼をクリックすると、制約の設定を変更できる](image/4-7.png)
+![▼をクリックすると、制約の設定を変更できる](image/4-7.png)
 
 ### width Height
 
@@ -74,7 +74,7 @@ width Height はViewの幅と高さを設定する、UILabelやUIButtonの幅の
 Aligin は　選択した2つのViewのLeading, Trailing,　Top, Bottom, x方向, Y方向, 中央, ベースライン　のどれかを同じ値にする
 制約ボタン上のAlign と同様の機能ですが、定数を設定することはできない
 
-[Aliginの表](image/4-8.png)
+![Aliginの表](image/4-8.png)
 
 それぞれの説明は実際に使って確認する
 
@@ -94,21 +94,21 @@ Aligin は　選択した2つのViewのLeading, Trailing,　Top, Bottom, x方向
 
 ## Control　＋　ドラッグで制約を追加する
 
-[詳細図](image/4-9.png)
+![詳細図](image/4-9.png)
 
 ### 一つのViewを選択した時
 
-[詳細図](image/4-10.png)
+![詳細図](image/4-10.png)
 
 ### 同じ階層のViewを選択した時
 
-[詳細図](image/4-11.png)
+![詳細図](image/4-11.png)
 
-[制約一覧](image/4-12.png)
+![制約一覧](image/4-12.png)
 
 ### 親子関係にあるビューを選択した時
 
-[詳細図](image/4-13.png)
+![詳細図](image/4-13.png)
 
 ## インターフェースビルダー上での制約表示
 
@@ -117,27 +117,27 @@ IBでは視覚的に制約情報を表示できることができる、また、
 
 ### 通常の制約
 
-[通常制約](image/4-14.png)
+![通常制約](image/4-14.png)
 
 ### 中央揃え制約
 
-[中央揃え](image/4-15.png)
+![中央揃え](image/4-15.png)
 
 ### Relationと制約
 
-[Relationと制約](image/4-16.png)
+![Relationと制約](image/4-16.png)
 
 ### Multiplierと制約
 
-[Multiplierと制約](image/4-17.png)
+![Multiplierと制約](image/4-17.png)
 
 ### 警告を含む制約
 
-[黄色い制約が表示される](image/4-18.png)
+![黄色い制約が表示される](image/4-18.png)
 
 ### コンフリクトを含む制約
 
-[コンフリクトを含む制約](image/4-19.png)
+![コンフリクトを含む制約](image/4-19.png)
 
 ## 制約の参照
 
@@ -161,9 +161,9 @@ IBOutletで参照できる
   
 ### 制約を細かく編集する（Size inspector）
 
-[参考図](image/4-20.png)
-[参考図](image/4-21.png)
-[参考図](image/4-22.png)
+![参考図](image/4-20.png)
+![参考図](image/4-21.png)
+![参考図](image/4-22.png)
 
 ### XibファイルとStoryboardを組み合わせる
 
@@ -230,7 +230,7 @@ extension UIStoryboard {
 
 ### storyboard Reference
 
-[参考図](image/4-23.png)
+![参考図](image/4-23.png)
 
 ## まとめ
 

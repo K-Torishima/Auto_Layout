@@ -24,7 +24,7 @@ let constraint2 = textField.widthAnchor.constraintEqualToConstant(20.0)
 
 ```
 
-[関係図](image/5-1.png)
+![関係図](image/5-1.png)
 
 ### アンカー、　Viewを固定する対象
 
@@ -42,7 +42,7 @@ let constraint2 = textField.widthAnchor.constraintEqualToConstant(20.0)
 NSLayoutAnchorを用いた制約の生成は、NSLayoutConstraiontを直接生成するのではなく、
 UIViewからNSLayoutAnchorのサブクラスを取得し、このNSLayoutAnchorのサブクラスがNSLayoutConstraintを生成する
 
-[AnchorとAtributeの対象関係](image/5-2.png)
+![AnchorとAtributeの対象関係](image/5-2.png)
 
 ### NSLayoutAnchorで制約を生成する
 
